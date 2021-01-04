@@ -46,10 +46,25 @@ def _get_urls():
     urls = page.content.decode("utf-8").split('\n')[:10]
     return (class_name, wnid, urls)
 
-def index(request):
+def login(request):
+    return render(request, 'describe/login.html')
+
+def login_submit(request, placeholder):
+    try:
+        name = request.POST['name']
+    except (KeyError):
+        return login(request)
+
+    username = name.replace(" ", "").lower()
+    print (username)
+    
+    return HttpResponseRedirect(reverse('index', args=(username,)))
+
+def index(request, username):
     class_name, wnid, urls = _get_urls()
     context = {
         'class_name': class_name,
+        'username': username,
         'wnid': wnid,
         'urls': urls,
         'error_message': None,
@@ -61,10 +76,10 @@ def submit(request, class_id):
         description_text = request.POST['description']
         wnid = request.POST['wnid']
         class_name = request.POST['class_name']
-        print (request.POST)
+        username = request.POST['username']
     except (KeyError):
         return index(request)
     
-    description = Description(class_id=wnid, class_name=class_name, description_text=description_text)
+    description = Description(class_id=wnid, class_name=class_name, description_text=description_text, username=username)
     description.save()
-    return HttpResponseRedirect(reverse('index'))
+    return HttpResponseRedirect(reverse('index', args=(username,)))
