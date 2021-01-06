@@ -55,7 +55,7 @@ def login_submit(request):
     except (KeyError):
         return login(request)
 
-    username = name.replace(" ", "").lower()
+    username = name.replace(" ", "").replace("-", "").lower()
     
     return HttpResponseRedirect(reverse('describe', args=(username,)))
 
