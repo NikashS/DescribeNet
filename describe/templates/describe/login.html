@@ -2,18 +2,21 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'describe/style.css' %}">
 
-<div class="container">
-    <h1>DescribeNet</h1>
-    <h3>Please enter your name.</h3>
+<div class="header">
+    <div class="row">
+        <p class="title">DescribeNet</p>
+    </div>
+    <div class="row">
+        <p class="main">Labeling ImageNet classes with highly specific and visual descriptions.</p>
+    </div>
 </div>
 
-
-<form action="{% url 'login_submit' %}" method="post">
-{% csrf_token %}
-<!-- {{ wnid }}
-{{ class_name }} -->
-<label for="name">Name:</label><br>
-<input type="text" id="name" name="name" required>
-
-<input type="submit" value="Submit">
-</form>
+<div class="form">
+    <form action="{% url 'login_submit' %}" method="post">
+    {% csrf_token %}
+    <div class="login_div">
+        <input type="text" placeholder="Your name." id="name" name="name" required></textarea>
+    </div>
+    <input type="submit" value="Submit" class="submit">
+    </form>
+</div>

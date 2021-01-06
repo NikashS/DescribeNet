@@ -2,35 +2,46 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'describe/style.css' %}">
 
-<div class="container">
-    <h1>DescribeNet</h1>
-    <h3>Please type a visually descriptive overview of the images from the following category.</h3>
+<div class="header">
+    <div class="row">
+        <p class="title">DescribeNet</p>
+    </div>
+    <div class="row">
+        <p class="main">Labeling ImageNet classes with highly specific and visual descriptions.</p>
+    </div>
 </div>
 
-
-<h3>{{ class_name }}</h3>
+<div class="row">
+    <p class="category">{{ class_name }}</p>
+</div>
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-{% if urls %}
-    <ul>
-    {% for url in urls %}
-        <li>{{ url }}</li>
-    {% endfor %}
-    </ul>
-
-    <form action="{% url 'describe_submit' %}" method="post">
-    {% csrf_token %}
-    <!-- {{ wnid }}
-    {{ class_name }} -->
-    <label for="description">Description:</label><br>
-    <input type="text" id="description" name="description" required>
-    <input type="text" value="{{ class_name }}" name="class_name" hidden>
-    <input type="text" value="{{ wnid }}" name="wnid" hidden>
-    <input type="text" value="{{ username }}" name="username" hidden>
-
-    <input type="submit" value="Submit">
-    </form>
+{% if first_urls %}
+    <div class="row">
+        {% for url in first_urls %}
+            <img src="{{url}}" alt="" onerror="this.src='../../static/error.jpg'">
+        {% endfor %}
+    </div>
+    <div class="row">
+        {% for url in last_urls %}
+            <img src="{{url}}" alt="" onerror="this.src='../../static/error.jpg'">
+        {% endfor %}
+    </div>
+    <div class="form">
+        <form action="{% url 'describe_submit' %}" method="post">
+            {% csrf_token %}
+            <div>
+                <input type="text" placeholder="Write a descriptive sentence label for the class."{{ class_name}}" id="description" name="description" required></textarea>
+            </div>
+            <div>
+                <input type="text" value="{{ class_name }}" name="class_name" hidden>
+                <input type="text" value="{{ wnid }}" name="wnid" hidden>
+                <input type="text" value="{{ username }}" name="username" hidden>
+                <input type="submit" value="Submit" class="submit">
+            </div>
+            </form>
+    </div>
 {% else %}
     <p>No images are available.</p>
 {% endif %}

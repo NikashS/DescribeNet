@@ -43,7 +43,7 @@ def _get_urls():
     wnid, class_name = random.choice(wnids)
     url = 'http://www.image-net.org/api/text/imagenet.synset.geturls?wnid=' + wnid
     page = requests.get(url)
-    urls = page.content.decode("utf-8").split('\n')[:10]
+    urls = page.content.decode("utf-8").split('\n')[:8]
     return (class_name, wnid, urls)
 
 def login(request):
@@ -65,7 +65,8 @@ def describe(request, username):
         'class_name': class_name,
         'username': username,
         'wnid': wnid,
-        'urls': urls,
+        'first_urls': urls[:4],
+        'last_urls': urls[4:8],
         'error_message': None,
     }
     return render(request, 'describe/describe.html', context)
