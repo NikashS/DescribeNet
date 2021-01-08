@@ -23,12 +23,12 @@
 {% if first_urls %}
     <div class="row">
         {% for url in first_urls %}
-            <img src="{{url}}" alt="" onerror="this.src='../../static/error.jpg'">
+            <img src="{{url}}" alt="" onerror="this.src='../../static/failed.jpg'">
         {% endfor %}
     </div>
     <div class="row">
         {% for url in last_urls %}
-            <img src="{{url}}" alt="" onerror="this.src='../../static/error.jpg'">
+            <img src="{{url}}" alt="" onerror="this.src='../../static/failed.jpg'">
         {% endfor %}
     </div>
     <div class="form">
@@ -48,3 +48,7 @@
 {% else %}
     <p>No images are available.</p>
 {% endif %}
+
+<div class="footer">
+    <p>If you are an admin, you can view saved submissions <a href="https://describenet.herokuapp.com/admin/describe/description/">here</a></p>
+</div>
