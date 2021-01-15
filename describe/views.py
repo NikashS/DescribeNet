@@ -4,46 +4,19 @@ from django.urls import reverse
 
 import random
 import requests
+from lxml import html
 
 from .models import Description
-
-wnids = [
-    ('n01443537', 'Goldfish'),
-    ('n01484850', 'Great White Shark'),
-    ('n01498041', 'Stingray'),
-    ('n01986214', 'Hermit Crab'),
-    ('n02051845', 'Pelican'),
-    ('n02840245', 'Binder'),
-    ('n02877765', 'Bottlecap'),
-    ('n02883205', 'Bow Tie'),
-    ('n02980441', 'Castle'),
-    ('n02999410', 'Chain'),
-    ('n02084071', 'Dog'),
-    ('n03196217', 'Digital Clock'),
-    ('n03255030', 'Dumbbell'),
-    ('n03272010', 'Electric Guitar'),
-    ('n03345487', 'Fire Truck'),
-    ('n03445777', 'Golf Ball'),
-    ('n03544143', 'Hourglass'),
-    ('n03590841', 'Jack-O-Lantern'),
-    ('n03759954', 'Microphone'),
-    ('n03933933', 'Pier'),
-    ('n03982430', 'Pool Table'),
-    ('n04090263', 'Rifle'),
-    ('n04125021', 'Safe'),
-    ('n04194289', 'Ship'),
-    ('n04285008', 'Sports Car'),
-    ('n04557648', 'Water Bottle'),
-    ('n07614500', 'Ice Cream'),
-    ('n07873807', 'Pizza'),
-    ('n15075141', 'Toilet Paper'),
-]
+from .static.wnids import wnids
 
 def _get_urls():
     wnid, class_name = random.choice(wnids)
-    url = 'http://www.image-net.org/api/text/imagenet.synset.geturls?wnid=' + wnid
+
+    url = 'http://deep.cs.virginia.edu/data/imagenet256/train/' + wnid + '/'
     page = requests.get(url)
-    urls = page.content.decode("utf-8").split('\n')[:8]
+    tree = html.fromstring(page.content)
+    picture_names = tree.xpath('//a/text()')
+    urls = [url + picture_name for picture_name in picture_names[20:28]]
     return (class_name, wnid, urls)
 
 def login(request):
