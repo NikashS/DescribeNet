@@ -12,11 +12,11 @@ from .static.wnids import wnids
 def _get_urls():
     wnid, class_name = random.choice(wnids)
 
-    url = 'http://deep.cs.virginia.edu/data/imagenet256/train/' + wnid + '/'
+    url = 'http://www.cs.virginia.edu/~ns6td/data/train/' + wnid + '/'
     page = requests.get(url)
     tree = html.fromstring(page.content)
     picture_names = tree.xpath('//a/text()')
-    urls = [url + picture_name for picture_name in picture_names[20:28]]
+    urls = [url + picture_name for picture_name in picture_names[5:13]]
     return (class_name, wnid, urls)
 
 def login(request):
